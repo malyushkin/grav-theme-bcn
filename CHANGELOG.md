@@ -1,3 +1,9 @@
+# v1.0.1
+## 10/30/2026
+
+1. [](#bugfix)
+    * Header menu items sit 1.25rem apart. A Pico override kept them at 0.5rem, so two items such as "Blog Journal" read as one phrase
+
 # v1.0.0
 ## 10/30/2026
 

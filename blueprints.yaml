@@ -1,7 +1,7 @@
 name: 'BCN'
 slug: bcn
 type: theme
-version: 1.0.0
+version: 1.0.1
 description: 'Blades-based blog theme with 3-mode theme toggle and accessible palette.'
 icon: moon
 author:

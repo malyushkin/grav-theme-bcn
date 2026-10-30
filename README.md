@@ -3,7 +3,7 @@
 A calm, readable blog theme for [Grav](https://getgrav.org): Blades CSS base, light/dark/auto modes, an accessible
 palette, and a header with a real menu. Named after BCN, the airport its author flies home to.
 
-![bcn theme](screenshot.jpg)
+![bcn theme, dark mode, with demo posts](screenshot.jpg)
 
 ## Features
 
