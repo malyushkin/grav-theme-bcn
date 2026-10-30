@@ -1,0 +1,1034 @@
+/* ==========================================================================
+   bcn theme — token layer + components
+   Builds on Blades CSS; we override its color variables and add our own.
+   ========================================================================== */
+
+:root {
+  /* Brand scale (purple, derived from #A855F7) */
+  --bcn-brand-50:  #FAF5FF;
+  --bcn-brand-100: #F3E8FF;
+  --bcn-brand-200: #E9D5FF;
+  --bcn-brand-300: #D8B4FE;
+  --bcn-brand-400: #C084FC;
+  --bcn-brand-500: #A855F7;
+  --bcn-brand-600: #9333EA;
+  --bcn-brand-700: #7E22CE;
+  --bcn-brand-800: #6B21A8;
+  --bcn-brand-900: #581C87;
+  --bcn-brand-950: #3B0764;
+
+  /* Neutral slate (text, borders, surfaces) */
+  --bcn-slate-50:  #F8FAFC;
+  --bcn-slate-100: #F1F5F9;
+  --bcn-slate-200: #E2E8F0;
+  --bcn-slate-300: #CBD5E1;
+  --bcn-slate-400: #94A3B8;
+  --bcn-slate-500: #64748B;
+  --bcn-slate-600: #475569;
+  --bcn-slate-700: #334155;
+  --bcn-slate-800: #1E293B;
+  --bcn-slate-900: #0F172A;
+  --bcn-slate-950: #020617;
+
+  /* Semantic tokens (light defaults) */
+  --bcn-bg:            #FFFFFF;
+  --bcn-surface:       var(--bcn-slate-50);
+  --bcn-fg:            var(--bcn-slate-900);
+  --bcn-muted:         var(--bcn-slate-100);
+  --bcn-muted-fg:      var(--bcn-slate-600);
+  --bcn-border:        var(--bcn-slate-200);
+  --bcn-border-strong: var(--bcn-slate-300);
+  --bcn-code-bg:       var(--bcn-slate-100);
+  --bcn-code-fg:       var(--bcn-slate-900);
+  --bcn-link:          var(--bcn-brand-600);
+  --bcn-link-hover:    var(--bcn-brand-700);
+  --bcn-ring:          var(--bcn-brand-500);
+  --bcn-accent:        var(--bcn-brand-100);
+  --bcn-accent-fg:     var(--bcn-brand-900);
+  --bcn-accent-strong: var(--bcn-brand-600);
+
+  /* Layout */
+  --bcn-max-width: 42rem;
+  --bcn-container: 75rem;
+  --bcn-header-height: 72px;
+  --bcn-header-height-scrolled: 60px;
+  --bcn-radius-xs: 4px;
+  --bcn-radius-sm: 6px;
+  --bcn-radius: 8px;
+  --bcn-radius-md: 12px;
+  --bcn-radius-lg: 16px;
+  --bcn-radius-pill: 9999px;
+  --bcn-transition: 150ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Editorial type scale. Reading sizes are set for a 42rem measure, so
+     they run larger than a full-width layout would take: body copy is
+     17px against Pico's 16px root. At this size the 42rem measure runs
+     close to 80 characters — the long end of comfortable, so narrowing
+     --bcn-max-width is the lever if it ever reads too wide. */
+  --bcn-text-title:   clamp(2rem, 1.35rem + 2.2vw, 2.75rem);
+  --bcn-text-h2:      clamp(1.625rem, 1.45rem + 0.7vw, 2rem);
+  --bcn-text-h3:      1.375rem;
+  --bcn-text-lead:    1.375rem;
+  --bcn-text-body:    1.0625rem;
+  --bcn-text-meta:    0.8125rem;
+
+  /* --pico-font-size is pinned so rem-based layout (like --bcn-max-width
+     above) stops scaling with viewport width — Pico's own default grows
+     it up to 131.25% on wide screens. Layout constants only; the color
+     remap lives in :root:not([data-theme="dark"]) below — Blades'
+     light-palette selector is (0,2,0) and beats a bare :root. */
+  --pico-font-size: 16px;
+  --pico-spacing: 1rem;
+  --pico-typography-spacing-vertical: 1.25rem;
+}
+
+/* Pico overrides — any Blades-styled element (buttons, cards, nav,
+   form elements, tables, blockquotes) reads these instead of Pico's
+   own defaults. Remapping here closes bug classes at the token layer
+   instead of chasing individual components (Phase 1's theme-toggle-
+   button-was-Pico-blue bug was exactly this class of leak).
+   Selector matches Blades' own light-palette specificity (0,2,0) —
+   :scope:not([data-theme=dark]) in blades.min.css — so this actually
+   wins instead of losing to it silently. */
+:root:not([data-theme="dark"]) {
+  --pico-background-color: var(--bcn-bg);
+  --pico-color: var(--bcn-fg);
+  --pico-h1-color: var(--bcn-fg);
+  --pico-h2-color: var(--bcn-fg);
+  --pico-muted-color: var(--bcn-muted-fg);
+  --pico-muted-border-color: var(--bcn-border);
+  --pico-blockquote-border-color: var(--bcn-border-strong);
+  --pico-primary: var(--bcn-brand-600);
+  --pico-primary-hover: var(--bcn-brand-700);
+  --pico-primary-background: var(--bcn-brand-600);
+  --pico-primary-border: var(--bcn-brand-600);
+  --pico-primary-inverse: #ffffff;
+  --pico-card-background-color: var(--bcn-surface);
+  --pico-card-border-color: var(--bcn-border);
+  --pico-card-sectioning-background-color: var(--bcn-muted);
+  --pico-form-element-background-color: var(--bcn-bg);
+  --pico-form-element-border-color: var(--bcn-border);
+  --pico-form-element-color: var(--bcn-fg);
+}
+
+:root[data-theme="dark"] {
+  --bcn-bg:            var(--bcn-slate-950);
+  --bcn-surface:       var(--bcn-slate-900);
+  --bcn-fg:            var(--bcn-slate-50);
+  --bcn-muted:         var(--bcn-slate-800);
+  --bcn-muted-fg:      var(--bcn-slate-400);
+  --bcn-border:        var(--bcn-slate-700);
+  --bcn-border-strong: var(--bcn-slate-600);
+  --bcn-code-bg:       var(--bcn-slate-800);
+  --bcn-code-fg:       var(--bcn-slate-50);
+  --bcn-link:          var(--bcn-brand-400);
+  --bcn-link-hover:    var(--bcn-brand-300);
+  --bcn-ring:          var(--bcn-brand-400);
+  --bcn-accent:        var(--bcn-brand-800);
+  --bcn-accent-fg:     var(--bcn-brand-100);
+  --bcn-accent-strong: var(--bcn-brand-400);
+
+  /* Same Pico remap as :root, dark-mode --bcn-* values. --pico-font-size
+     / --pico-spacing / --pico-typography-spacing-vertical are layout
+     constants set once in :root above — not redeclared here. */
+  --pico-background-color: var(--bcn-bg);
+  --pico-color: var(--bcn-fg);
+  --pico-h1-color: var(--bcn-fg);
+  --pico-h2-color: var(--bcn-fg);
+  --pico-muted-color: var(--bcn-muted-fg);
+  --pico-muted-border-color: var(--bcn-border);
+  --pico-blockquote-border-color: var(--bcn-border-strong);
+  --pico-primary: var(--bcn-brand-400);
+  --pico-primary-hover: var(--bcn-brand-300);
+  --pico-primary-background: var(--bcn-brand-400);
+  --pico-primary-border: var(--bcn-brand-400);
+  --pico-card-background-color: var(--bcn-surface);
+  --pico-card-border-color: var(--bcn-border);
+  --pico-card-sectioning-background-color: var(--bcn-muted);
+  --pico-form-element-background-color: var(--bcn-surface);
+  --pico-form-element-border-color: var(--bcn-border);
+  --pico-form-element-color: var(--bcn-fg);
+}
+
+/* Override Blades base colors to use our palette */
+:root { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--bcn-bg);
+  color: var(--bcn-fg);
+  transition: background-color var(--bcn-transition), color var(--bcn-transition);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  background: var(--bcn-bg);
+  color: var(--bcn-fg);
+  /* Blades sets hyphens: auto on body; in Russian that splits words
+     mid-line ("пережи-вал") on phones. Break only at explicit &shy;. */
+  hyphens: manual;
+  -webkit-hyphens: manual;
+}
+
+a {
+  color: var(--bcn-link);
+  text-decoration: none;
+  transition: color var(--bcn-transition);
+}
+a:hover { color: var(--bcn-link-hover); text-decoration: underline; }
+a:focus-visible {
+  outline: 2px solid var(--bcn-ring);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/* Headings sit at 500/600 rather than Blades' bolder defaults: at this
+   size a lighter weight is what keeps a large title from shouting.
+   Blades tints h3 and below toward its muted color, which breaks the
+   heading hierarchy — they all take the page's own foreground here. */
+h1, h2, h3, h4, h5, h6 { color: var(--bcn-fg); }
+
+h1 {
+  font-size: var(--bcn-text-title);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h2 {
+  font-size: var(--bcn-text-h2);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h3 {
+  font-size: var(--bcn-text-h3);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.site-main {
+  width: 100%;
+  max-width: var(--bcn-max-width);
+  margin: 0 auto;
+  padding-block: 3rem 4rem;
+  padding-inline: 1.25rem;
+}
+
+/* Header and footer span the full site container; the article column
+   stays at --bcn-max-width so the measure holds. */
+.site-container {
+  width: 100%;
+  max-width: var(--bcn-container);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.site-header-container {
+  width: 100%;
+  max-width: var(--bcn-max-width);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.site-main { flex: 1; }
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.site-nav {
+  display: block;
+  border-bottom: 1px solid var(--bcn-border);
+  background: color-mix(in oklab, var(--bcn-bg) 80%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  backdrop-filter: saturate(180%) blur(12px);
+  transition: background-color var(--bcn-transition), border-color var(--bcn-transition);
+}
+.site-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: var(--bcn-header-height);
+  transition: min-height 200ms ease;
+}
+.site-nav-brand {
+  flex: 0 0 auto;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--bcn-fg);
+}
+.site-nav-brand:hover { color: var(--bcn-fg); text-decoration: none; }
+.site-nav-inner { justify-content: space-between; }
+.site-nav-start {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  min-width: 0;
+}
+/* Pico's `nav ul:first-of-type` / `:last-of-type` pull the list outward with
+   negative margins and outrank a single class, so the selector is doubled up
+   to win. Without it the nav links sit 8px closer to the theme toggle than
+   the flex gap says. */
+.site-nav-links,
+.site-nav-links:first-of-type,
+.site-nav-links:last-of-type {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.site-nav-links li {
+  margin: 0;
+  padding: 0;
+}
+.site-nav-links { gap: 1.25rem; }
+.site-nav-link {
+  display: inline-flex;
+  align-items: center;
+  /* Pico gives `nav li a` a negative inline margin and padding. */
+  margin: 0;
+  padding: 0.25rem 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  color: var(--bcn-muted-fg);
+  transition: color 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+/* The current page is the main text colour, the rest muted: a menu, not a
+   row of buttons. */
+.site-nav-link:hover,
+.site-nav-link-active,
+.site-nav-link-active:hover {
+  color: var(--bcn-fg);
+  text-decoration: none;
+}
+
+.site-nav-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.site-nav-fixed.is-scrolled .site-nav-inner {
+  min-height: var(--bcn-header-height-scrolled);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-nav-animated {
+    animation: bcn-slide-down 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+}
+@keyframes bcn-slide-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   Header menus
+   Language and theme, each an icon button that opens a small panel.
+   ========================================================================== */
+
+/* Pulls the icon glyphs, not their 2rem hit areas, flush with the column edge. */
+.header-menus { display: flex; align-items: center; gap: 0.25rem; margin-right: -0.5rem; }
+.header-menu { position: relative; }
+
+/* Resets Pico's button look (padding, background, border, width). */
+.header-menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--bcn-radius-sm);
+  box-shadow: none;
+  color: var(--bcn-muted-fg);
+  cursor: pointer;
+  transition: background-color 150ms, color 150ms;
+}
+.header-menu-toggle:hover,
+.header-menu-toggle[aria-expanded="true"] {
+  background: var(--bcn-muted);
+  color: var(--bcn-fg);
+}
+.header-menu-toggle:focus-visible,
+.header-menu-item:focus-visible {
+  outline: 2px solid var(--bcn-ring);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* The toggle carries all three theme icons; show the current mode's. */
+.header-menu-toggle .theme-icon { display: none; }
+html[data-theme-mode="light"] .header-menu-toggle .theme-icon-light,
+html[data-theme-mode="dark"] .header-menu-toggle .theme-icon-dark,
+html[data-theme-mode="auto"] .header-menu-toggle .theme-icon-auto,
+html:not([data-theme-mode]) .header-menu-toggle .theme-icon-auto { display: block; }
+
+.header-menu-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 9.5rem;
+  padding: 0.25rem;
+  background: var(--bcn-bg);
+  border: 1px solid var(--bcn-border);
+  border-radius: var(--bcn-radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+}
+.header-menu-panel[hidden] { display: none; }
+
+.header-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.4375rem 0.625rem;
+  background: none;
+  border: 0;
+  border-radius: var(--bcn-radius-sm);
+  box-shadow: none;
+  font-family: inherit;
+  font-size: var(--bcn-text-meta);
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-align: left;
+  color: var(--bcn-muted-fg);
+  text-decoration: none;
+  cursor: pointer;
+}
+.header-menu-item:hover { background: var(--bcn-muted); color: var(--bcn-fg); text-decoration: none; }
+.header-menu-item[aria-current],
+.header-menu-item[aria-pressed="true"] { color: var(--bcn-fg); font-weight: 600; }
+.header-menu-item .theme-icon { display: block; flex: none; }
+
+/* ==========================================================================
+   Phone menu: below 40rem the menu and both icon menus fold into a ☰ panel.
+   ========================================================================== */
+
+.site-nav-menu-toggle { display: none; }
+.site-nav-panel[hidden] { display: none; }
+.site-nav-panel {
+  border-top: 1px solid var(--bcn-border);
+  padding-block: 0.75rem 1rem;
+}
+.site-nav-panel-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+.site-nav-panel-links .site-nav-link { padding: 0.375rem 0; font-size: 1rem; }
+/* [role=group] gets Pico's input-group look (full width, border radius,
+   flex children); reset it to a plain row. */
+.site-nav-panel-row,
+.site-nav-panel-row[role="group"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  width: auto;
+  margin: 0 0 0.5rem;
+  border-radius: 0;
+  box-shadow: none;
+}
+.site-nav-panel-item,
+.site-nav-panel-row[role="group"] > .site-nav-panel-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.375rem 0.625rem;
+  background: none;
+  border: 0;
+  border-radius: var(--bcn-radius-sm);
+  box-shadow: none;
+  font-family: inherit;
+  font-size: var(--bcn-text-meta);
+  font-weight: 500;
+  color: var(--bcn-muted-fg);
+  text-decoration: none;
+  cursor: pointer;
+}
+.site-nav-panel-row[role="group"] > .site-nav-panel-item:hover { background: var(--bcn-muted); color: var(--bcn-fg); text-decoration: none; }
+.site-nav-panel .site-nav-panel-row[role="group"] > .site-nav-panel-item[aria-current],
+.site-nav-panel-row[role="group"] > .site-nav-panel-item[aria-pressed="true"] { background: var(--bcn-muted); color: var(--bcn-fg); font-weight: 600; }
+.site-nav-panel-item:focus-visible { outline: 2px solid var(--bcn-ring); outline-offset: 2px; }
+
+@media (max-width: 40rem) {
+  .site-nav-links,
+  .site-nav-links:first-of-type,
+  .site-nav-links:last-of-type,
+  .header-menus { display: none; }
+  .site-nav-menu-toggle { display: inline-flex; margin-right: -0.5rem; }
+}
+@media (min-width: 40.0625rem) {
+  .site-nav-panel { display: none; }
+}
+
+/* ==========================================================================
+   Post + blog list
+   ========================================================================== */
+
+/* Both are bare <article> tags in the templates — Pico styles bare
+   article as a padded/backgrounded/shadowed card. We want plain flow
+   containers; layout comes from .site-main and our own rules below. */
+.post {
+  margin: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.blog-list-item {
+  margin: 0;
+  padding: 1.75rem 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--bcn-border);
+}
+.blog-list-item:first-of-type { padding-top: 0; }
+.blog-list-item:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.blog-list > h1 { margin: 0 0 3rem; }
+.blog-list-item--thumb { display: flex; gap: 1.25rem; align-items: flex-start; }
+.blog-list-text { flex: 1; min-width: 0; }
+.blog-list-thumb-link { flex: none; line-height: 0; }
+.blog-list-thumb {
+  width: 96px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.blog-list-title { margin: 0.375rem 0 0.5rem; font-size: var(--bcn-text-h3); text-wrap: balance; }
+.bcn-nowrap { white-space: nowrap; }
+.blog-list-excerpt {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--bcn-muted-fg);
+  text-wrap: pretty;
+}
+/* Post titles read as headings, not links: the hover state is what marks
+   them clickable, so the list does not turn into a wall of accent color. */
+.blog-list-title a { color: var(--bcn-fg); }
+.blog-list-title a:hover { color: var(--bcn-link); text-decoration: none; }
+.blog-list-meta { display: flex; align-items: center; gap: 0.5rem; color: var(--bcn-muted-fg); font-size: 0.875rem; }
+@media (max-width: 40rem) {
+  .blog-list-item--thumb { gap: 1rem; }
+  .blog-list-thumb { width: 72px; height: 48px; }
+}
+.lang-badge {
+  display: inline-block;
+  padding: 0 0.375rem;
+  border: 1px solid var(--bcn-border);
+  border-radius: var(--bcn-radius);
+  font-size: var(--bcn-text-meta);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--bcn-muted-fg);
+}
+
+/* <header class="post-header"> is a direct child of <article class="post">
+   — Pico's `article>header` rules (background, negative margins,
+   border-bottom) plus `article`'s own padding stack onto it. Reset all
+   of it; keep only the spacing bcn actually wants. */
+.post-header {
+  margin: 0 0 2.5rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+.post-header h1 { margin: 0 0 1.5rem; }
+.post-meta { color: var(--bcn-muted-fg); font-size: var(--bcn-text-meta); }
+
+.post-backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 3rem;
+  font-size: var(--bcn-text-meta);
+  color: var(--bcn-muted-fg);
+}
+.post-backlink:hover { color: var(--bcn-fg); text-decoration: none; }
+
+/* Same size, weight and color as .post-date and .post-byline-secondary, so
+   the category and the date read as one register. Capitalized rather than
+   uppercased because the value comes from the taxonomy in lower case. */
+.post-section {
+  display: block;
+  font-size: var(--bcn-text-meta);
+  font-weight: 400;
+  text-transform: capitalize;
+  color: var(--bcn-muted-fg);
+  margin-bottom: 0.75rem;
+}
+
+/* A quiet line rather than a callout: it tells the reader which language
+   the text is in without competing with the post's own first paragraph. */
+.translation-note {
+  margin: 0 0 2rem;
+  padding: 0.625rem 0;
+  border-top: 1px solid var(--bcn-border);
+  border-bottom: 1px solid var(--bcn-border);
+  font-size: var(--bcn-text-meta);
+  color: var(--bcn-muted-fg);
+}
+.post-subtitle {
+  margin: 0 0 2rem;
+  font-size: var(--bcn-text-lead);
+  line-height: 1.6;
+  color: var(--bcn-muted-fg);
+  text-wrap: pretty;
+}
+.post-date { color: var(--bcn-muted-fg); font-size: var(--bcn-text-meta); }
+
+/* Byline: avatar beside a two-line stack of name and role · date. */
+.post-byline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.post-byline-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.post-author {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--bcn-fg);
+}
+.post-byline-secondary {
+  font-size: var(--bcn-text-meta);
+  line-height: 1.3;
+  color: var(--bcn-muted-fg);
+}
+
+/* Avatars carry a hairline so a light photo keeps an edge against the
+   page. Pure black/white at low alpha — a tinted neutral picks up the
+   surface behind it and reads as dirt on the image edge. */
+.post-avatar {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid oklch(0 0 0 / 0.12);
+}
+:root[data-theme="dark"] .post-avatar { border-color: oklch(1 0 0 / 0.24); }
+
+/* The closing avatar runs larger than the byline's: the block at the end is
+   the one that introduces the author, where the byline only names them. */
+.author-bio .post-avatar { width: 44px; height: 44px; }
+
+.post-content { font-size: var(--bcn-text-body); line-height: 1.65; }
+.post-content p { margin: 0 0 1rem; }
+.post-content ul,
+.post-content ol { margin: 0 0 1rem; }
+.post-content li { margin-bottom: 0.5rem; line-height: 1.6; }
+.post-content h2 {
+  margin-top: 4rem;
+  margin-bottom: 1.25rem;
+}
+.post-content h3 {
+  margin-top: 2.75rem;
+  margin-bottom: 0.875rem;
+}
+.post-content :is(h2, h3):first-child { margin-top: 0; }
+.post-content :is(h2, h3) + :is(h2, h3) {
+  margin-top: 1rem;
+}
+.post-content blockquote {
+  margin: 2rem 0;
+  padding: 0 0 0 1.25rem;
+  border-left: 3px solid var(--bcn-border-strong);
+  color: var(--bcn-muted-fg);
+}
+.post-content blockquote > :last-child { margin-bottom: 0; }
+
+.post-content pre {
+  background: var(--bcn-code-bg);
+  color: var(--bcn-code-fg);
+  padding: 1rem;
+  border-radius: var(--bcn-radius);
+  overflow-x: auto;
+}
+/* Blades forces pre:has(code){background:#181c25!important} regardless
+   of theme. Harmless in dark mode (close to our own dark code bg) but
+   makes light-mode code blocks nearly illegible: --bcn-code-fg is a
+   near-black color meant for a light background, rendered on Blades'
+   forced near-black one. Only !important can counter a vendor
+   !important — this is the one deliberate use of it in this theme. */
+:root[data-theme="light"] .post-content pre:has(code) {
+  background: var(--bcn-code-bg) !important;
+}
+.post-content table {
+  display: block;
+  overflow-x: auto;
+}
+.post-content code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+.post-content :not(pre) > code {
+  background: var(--bcn-muted);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+/* A day's numbers under its heading (weather, sleep, steps): meta, not prose,
+   so it gets the post date's size and colour and sits tight under the h2. */
+.post-content .day-stats {
+  margin: -0.75rem 0 1.5rem;
+  font-size: var(--bcn-text-meta);
+  line-height: 1.5;
+  color: var(--bcn-muted-fg);
+}
+
+/* github-markdown-alerts callouts, moved off GitHub's palette onto ours. A card
+   rather than a bare rule, so a reference note reads apart from the post's
+   plain blockquotes. */
+.post-content .md-alert {
+  --bcn-alert: var(--bcn-accent-strong);
+  margin: 2rem 0;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--bcn-alert);
+  border-radius: 0 var(--bcn-radius) var(--bcn-radius) 0;
+  background: var(--bcn-surface);
+}
+.post-content .md-alert--tip { --bcn-alert: #16A34A; }
+.post-content .md-alert--important { --bcn-alert: #8B5CF6; }
+.post-content .md-alert--warning { --bcn-alert: #D97706; }
+.post-content .md-alert--caution { --bcn-alert: #DC2626; }
+.post-content .md-alert .md-alert-title {
+  margin-bottom: 0.5rem;
+  font-size: var(--bcn-text-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bcn-alert);
+  fill: currentColor;
+}
+
+/* The rule and the space above it are what say the post ended. align-items is
+   flex-start because the stack runs taller than the avatar: the name/role pair
+   measures 37.8px, and the bio and links sit below it. */
+.author-bio {
+  display: flex;
+  align-items: flex-start;
+  /* The byline's gap. Matching the byline's total 50px instead would mean
+     0.375rem under a 44px avatar, and the name then sits on the image. The
+     closing name lands 6px right of the opening one; at this vertical
+     distance nobody reads the two edges against each other. */
+  gap: 0.75rem;
+  margin-top: 4rem;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--bcn-border);
+}
+
+/* .post-byline-info verbatim. The 2px is the byline's, and it is what makes
+   the name/role pair read as one unit rather than two lines. */
+.author-bio-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Line 1: the name. */
+.author-bio-identity {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+/* .post-author verbatim. */
+.author-bio-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--bcn-fg);
+}
+
+/* .post-byline-secondary verbatim. The opening byline puts "role · date"
+   here; the closing one drops the date, which the reader already has. */
+.author-bio-role {
+  margin: 0;
+  font-size: var(--bcn-text-meta);
+  line-height: 1.3;
+  color: var(--bcn-muted-fg);
+}
+
+/* The one fact that belongs to this post rather than to the author, so it
+   comes before the standing bio. Meta register, label muted, answer in the
+   page's own foreground. */
+.author-bio-did {
+  margin: 0.75rem 0 0;
+  font-size: var(--bcn-text-meta);
+  line-height: 1.5;
+  color: var(--bcn-fg);
+  text-wrap: pretty;
+}
+.author-bio-did-label { color: var(--bcn-muted-fg); }
+
+/* .author-bio-text verbatim, one notch further down the stack. */
+.author-bio-text {
+  margin: 0.5rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--bcn-muted-fg);
+  text-wrap: pretty;
+}
+
+/* Links in the meta register, separated by the same · the byline
+   uses. Colour and weight follow .site-footer a — foreground, 500, hover
+   underlines — because a row of accent-coloured links under the bio would
+   outweigh the bio. Gap is .blog-list-meta's 0.5rem. */
+.author-bio-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  font-size: var(--bcn-text-meta);
+  line-height: 1.3;
+}
+.author-bio-links li { list-style: none; }
+.author-bio-links li + li::before {
+  content: "\00B7";
+  margin-right: 0.5rem;
+  color: var(--bcn-muted-fg);
+}
+.author-bio-links a { color: var(--bcn-fg); font-weight: 500; }
+.author-bio-links a:hover { color: var(--bcn-fg); text-decoration: underline; }
+
+/* The rule that says the post ended belongs to whichever block comes first
+   after the body: .post-content when the notice follows it, .author-bio
+   otherwise. Not to .ai-notice itself — a border-top there would meet its
+   accent border-left in a corner, since both belong to the same box and no
+   margin or padding can stand between them. 4rem above and 2rem below is the
+   rhythm .author-bio already sets, so the tail reads the same either way. */
+.post-content:has(+ .ai-notice) {
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--bcn-border);
+}
+
+/* Shaped like the post's own blockquotes — a rule on the left, no card — so
+   the note reads in the site's voice. The rule carries the accent and the text
+   stays muted: a note about provenance should not outweigh the post. */
+.ai-notice {
+  /* Measured from the rule above, not from the last paragraph. */
+  margin: 2rem 0 0;
+  padding: 0 0 0 1.25rem;
+  border-left: 3px solid var(--bcn-accent-strong);
+  /* Reading size, not meta size: it is a quote, and it sits outside
+     .post-content so the body size and leading have to be restated here. */
+  font-size: var(--bcn-text-body);
+  line-height: 1.65;
+}
+/* The colour sits here rather than on .ai-notice: Blades colours <p> itself
+   (`address,blockquote,dl,ol,p,pre,table,ul { color: var(--pico-color) }`),
+   and a declaration on the element always beats a colour inherited from its
+   parent. Left on the aside, the note rendered at full --bcn-fg — near-white
+   in dark mode. */
+.ai-notice p { margin: 0; color: var(--bcn-muted-fg); }
+/* The rule above the note already closed the post, so the block drops its
+   own and moves up to meet the note: the two read as one closing unit. */
+.ai-notice + .author-bio {
+  margin-top: 2rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.taxonomies { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.taxonomies li { list-style: none; }
+.post-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--bcn-radius-pill);
+  background: var(--bcn-accent);
+  color: var(--bcn-accent-fg);
+  font-size: var(--bcn-text-meta);
+  transition-property: background-color, color, scale;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+/* Hover deepens the chip rather than recoloring it: the idle state already
+   carries the accent, so a second hue here would say something new. */
+a.post-tag:hover { background: var(--bcn-accent-strong); color: var(--bcn-bg); text-decoration: none; }
+a.post-tag:active { scale: 0.96; }
+
+/* Pagination — the template emits an empty <span> as the placeholder for
+   a missing prev/next, so only real links get the button treatment. */
+.pagination { display: flex; gap: 0.5rem; justify-content: space-between; margin-top: 4rem; list-style: none; padding: 0; }
+.pagination a {
+  padding: 0.5rem 0.9375rem;
+  font-size: 0.9375rem;
+  color: var(--bcn-fg);
+  border: 1px solid var(--bcn-border);
+  border-radius: var(--bcn-radius-sm);
+  transition-property: background-color, border-color, scale;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+.pagination a:hover { background: var(--bcn-muted); border-color: var(--bcn-border-strong); text-decoration: none; }
+.pagination a:active { scale: 0.96; }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--bcn-border);
+  padding-block: 2rem;
+  color: var(--bcn-muted-fg);
+  text-align: center;
+  font-size: var(--bcn-text-meta);
+}
+.site-footer p { margin: 0; }
+.site-footer a {
+  color: var(--bcn-fg);
+  font-weight: 500;
+}
+.site-footer a:hover { text-decoration: underline; }
+
+/* The spark stands in for a word, so it sits on the text baseline rather
+   than centred on the line box. */
+.footer-spark {
+  display: inline-block;
+  vertical-align: -1px;
+  color: var(--bcn-accent-strong);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .footer-spark { animation: bcn-spark 1.8s ease-in-out infinite; }
+}
+@keyframes bcn-spark {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%      { transform: scale(1.15); opacity: 0.7; }
+}
+
+
+/* ==========================================================================
+   Accent presets
+   Selected in the theme config, stamped onto <html> as data-accent.
+
+   Values are precomputed rather than derived at runtime: with a fixed set of
+   presets there is nothing to compute, and staying on hex keeps one notation
+   across the palette. Each pair was measured; the worst is 5.62:1 for a link
+   and 7.82:1 for chip text.
+
+   `purple` has no block on purpose. It is the brand ramp the theme is built
+   from, so selecting it leaves every token exactly where bcn.css put it.
+   ========================================================================== */
+
+/* The light-mode --bcn-accent-strong of every preset is copied into
+   admin-next/fields/accent-swatch.js for the admin's colour squares. */
+:root[data-accent="blue"] {
+  --bcn-link:          #115BCC;
+  --bcn-link-hover:    #0045A7;
+  --bcn-ring:          #115BCC;
+  --bcn-accent:        #E6EFFE;
+  --bcn-accent-fg:     #00409D;
+  --bcn-accent-strong: #115BCC;
+}
+:root[data-accent="blue"][data-theme="dark"] {
+  --bcn-link:          #7DAEFE;
+  --bcn-link-hover:    #B2CFFF;
+  --bcn-ring:          #7DAEFE;
+  --bcn-accent:        #00215B;
+  --bcn-accent-fg:     #B2CFFF;
+  --bcn-accent-strong: #7DAEFE;
+}
+
+:root[data-accent="green"] {
+  --bcn-link:          #017832;
+  --bcn-link-hover:    #005E26;
+  --bcn-ring:          #017832;
+  --bcn-accent:        #C8FFD0;
+  --bcn-accent-fg:     #015723;
+  --bcn-accent-strong: #017832;
+}
+:root[data-accent="green"][data-theme="dark"] {
+  --bcn-link:          #64C77A;
+  --bcn-link-hover:    #85E899;
+  --bcn-ring:          #64C77A;
+  --bcn-accent:        #00300F;
+  --bcn-accent-fg:     #85E899;
+  --bcn-accent-strong: #64C77A;
+}
+
+:root[data-accent="amber"] {
+  --bcn-link:          #8A5600;
+  --bcn-link-hover:    #6C4301;
+  --bcn-ring:          #8A5600;
+  --bcn-accent:        #FFEBD5;
+  --bcn-accent-fg:     #653E00;
+  --bcn-accent-strong: #8A5600;
+}
+:root[data-accent="amber"][data-theme="dark"] {
+  --bcn-link:          #E69D3A;
+  --bcn-link-hover:    #FEC076;
+  --bcn-ring:          #E69D3A;
+  --bcn-accent:        #392000;
+  --bcn-accent-fg:     #FEC076;
+  --bcn-accent-strong: #E69D3A;
+}
+
+:root[data-accent="rose"] {
+  --bcn-link:          #BA0036;
+  --bcn-link-hover:    #930029;
+  --bcn-ring:          #BA0036;
+  --bcn-accent:        #FEE8E8;
+  --bcn-accent-fg:     #890025;
+  --bcn-accent-strong: #BA0036;
+}
+:root[data-accent="rose"][data-theme="dark"] {
+  --bcn-link:          #FF838A;
+  --bcn-link-hover:    #FEB9BA;
+  --bcn-ring:          #FF838A;
+  --bcn-accent:        #4F0011;
+  --bcn-accent-fg:     #FEB9BA;
+  --bcn-accent-strong: #FF838A;
+}

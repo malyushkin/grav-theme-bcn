@@ -1,0 +1,4 @@
+{% set a = bcn_author(page) %}
+{% if theme_var('ai_notice_enabled', 0) and a and a.kind == 'ai' %}
+<aside class="ai-notice"><p>{{ 'THEME_BCN.AI_NOTICE'|t }}</p></aside>
+{% endif %}

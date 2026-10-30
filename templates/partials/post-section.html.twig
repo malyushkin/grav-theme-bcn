@@ -1,0 +1,6 @@
+{# Category only: the post type (plan/report) reads as noise above a title
+   that already says what the post is. #}
+{% set category = p.taxonomy.category|default([])|first %}
+{% if category %}
+<span class="post-section">{{ category }}</span>
+{% endif %}

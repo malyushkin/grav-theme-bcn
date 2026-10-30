@@ -1,0 +1,10 @@
+enabled: true
+theme_mode: auto
+accent_color: purple
+header_fixed: 1
+header_animated: 1
+sticky_footer: 1
+blog_page: /blog
+fontawesome_enabled: 1
+ai_notice_enabled: 0
+ai_notice_authors: []

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<article class="post">
+    {% include 'partials/post-header.html.twig' %}
+    {% include 'partials/translation-note.html.twig' %}
+    <div class="post-content">
+        {{ page.content|external_links|raw }}
+    </div>
+    {% include 'partials/ai-notice.html.twig' %}
+    {% include 'partials/author-bio.html.twig' %}
+</article>
+{% endblock %}

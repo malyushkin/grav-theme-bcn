@@ -1,0 +1,6 @@
+{
+  "name": "malyushkin/grav-theme-bcn",
+  "description": "bcn Grav theme: Blades CSS base, 3-mode theme toggle, accessible palette.",
+  "type": "grav-theme",
+  "license": "MIT"
+}

@@ -1,0 +1,28 @@
+{% set a = bcn_author(page) %}
+{% if a %}
+<aside class="author-bio">
+    {% include 'partials/author-avatar.html.twig' with {
+        size: 44, author: a.user, author_id: a.id, display_name: a.name
+    } %}
+    <div class="author-bio-info">
+        <p class="author-bio-identity">
+            <span class="author-bio-name">{{ a.name }}</span>
+        </p>
+        {% if a.role %}<p class="author-bio-role">{{ a.role }}</p>{% endif %}
+        {% if a.contribution %}
+        <p class="author-bio-did">
+            <span class="author-bio-did-label">{{ 'THEME_BCN.AUTHOR_CONTRIBUTION'|t }}</span>
+            {{ a.contribution }}
+        </p>
+        {% endif %}
+        {% if a.bio %}<p class="author-bio-text">{{ a.bio }}</p>{% endif %}
+        {% if a.links %}
+        <ul class="author-bio-links">
+            {% for link in a.links %}
+            <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</aside>
+{% endif %}

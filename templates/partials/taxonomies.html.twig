@@ -1,0 +1,8 @@
+{% set blog_route = theme_var('blog_page', '/blog') %}
+{% if page.taxonomy.tag %}
+<ul class="taxonomies">
+    {% for tag in page.taxonomy.tag %}
+    <li><a class="post-tag" href="{{ base_url_relative }}{{ blog_route }}/tag:{{ tag|e('url') }}">{{ tag|e }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}

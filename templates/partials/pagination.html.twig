@@ -1,0 +1,14 @@
+{% if page.collection.params and page.collection.params.pagination %}
+<div class="pagination">
+    {% if page.collection.params.pagination.hasPrev() %}
+        <a href="{{ page.collection.params.pagination.prevUrl() }}">&larr; Newer</a>
+    {% else %}
+        <span></span>
+    {% endif %}
+    {% if page.collection.params.pagination.hasNext() %}
+        <a href="{{ page.collection.params.pagination.nextUrl() }}">Older &rarr;</a>
+    {% else %}
+        <span></span>
+    {% endif %}
+</div>
+{% endif %}

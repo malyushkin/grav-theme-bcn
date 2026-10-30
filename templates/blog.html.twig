@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<section class="blog-list">
+    <h1 class="post-title">{{ page.title }}</h1>
+
+    {% if page.header.content %}
+        {% if page.header.content is not iterable %}
+        <div class="post-content">
+            {{ page.header.content|external_links|raw }}
+        </div>
+        {% endif %}
+    {% endif %}
+
+    {% for child in page.collection %}
+    {# The list entry's blurb is the post's own subtitle. Grav's summary() is
+       deliberately not used as a fallback: with summaries disabled on the blog
+       page it returns the entire post, and truncating that mid-word drags any
+       leading heading in with it. #}
+    {% set thumb = bcn_thumbnail(child) %}
+    <article class="blog-list-item{{ thumb ? ' blog-list-item--thumb' }}">
+        <div class="blog-list-text">
+            <div class="blog-list-meta">
+                <span class="post-date">
+                    <time datetime="{{ child.date|date('c') }}">{{ child.date|date('M j, Y') }}</time>
+                </span>
+                {% if child.language and child.language != grav.language.getLanguage() %}
+                <span class="lang-badge" lang="{{ child.language }}"
+                      title="{{ ('THEME_BCN.TRANSLATION.ORIGINAL_' ~ child.language|upper)|t|e('html_attr') }}">{{ child.language|upper }}</span>
+                {% endif %}
+            </div>
+            <h2 class="blog-list-title">
+                <a href="{{ child.url }}">{{ child.title|bcn_title }}</a>
+            </h2>
+            {% if child.header.subtitle %}
+            <p class="blog-list-excerpt">{{ child.header.subtitle }}</p>
+            {% endif %}
+        </div>
+        {% if thumb %}
+        {# 2x the displayed 96x64 so the crop stays sharp on retina screens #}
+        <a class="blog-list-thumb-link" href="{{ child.url }}" tabindex="-1" aria-hidden="true">
+            <img class="blog-list-thumb" src="{{ thumb.cropZoom(192, 128).url }}" width="96" height="64" loading="lazy" alt="">
+        </a>
+        {% endif %}
+    </article>
+    {% endfor %}
+
+    {% include 'partials/pagination.html.twig' %}
+</section>
+{% endblock %}

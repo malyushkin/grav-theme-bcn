@@ -1,0 +1,16 @@
+{# Avatar for an author, from the author's Grav account upload. No upload, no
+   image: the byline reads fine without one.
+   size: rendered CSS pixels. The crop runs at 2x so the image holds up on
+   retina, and Grav caches the result, which matters because account uploads
+   arrive at whatever resolution the admin form accepted.
+
+   User::getAvatarUrl() is deliberately not used: with no local image it
+   returns a Gravatar address, which would send a hash of the author's email
+   to a third party. #}
+{% if author.avatarImage %}
+{% set retina = size * 2 %}
+<img class="post-avatar"
+     src="{{ author.avatarImage.cropZoom(retina, retina).url }}"
+     alt="{{ display_name }}"
+     width="{{ size }}" height="{{ size }}" />
+{% endif %}

@@ -1,0 +1,68 @@
+en:
+  THEME_BCN:
+    THEME_MODE_LABEL: Theme Mode Default
+    THEME_MODE_HELP: 'Default appearance before a visitor makes a choice. Visitors can still toggle in the UI.'
+    THEME_MODE_AUTO: Auto (follow OS)
+    THEME_MODE_LIGHT: Light
+    THEME_MODE_DARK: Dark
+    ACCENT_COLOR_LABEL: Accent Color
+    ACCENT_COLOR_HELP: 'Colors links, tag chips, focus rings and the footer mark.'
+    ACCENT_PURPLE: Purple
+    ACCENT_BLUE: Blue
+    ACCENT_GREEN: Green
+    ACCENT_AMBER: Amber
+    ACCENT_ROSE: Rose
+    HEADER_FIXED_LABEL: Header Fixed
+    HEADER_FIXED_HELP: Pin the navigation to the top of the viewport.
+    HEADER_ANIMATED_LABEL: Header Animated
+    HEADER_ANIMATED_HELP: Slide the navigation in on load. Suppressed under prefers-reduced-motion.
+    STICKY_FOOTER_LABEL: Sticky Footer
+    STICKY_FOOTER_HELP: Keep the footer at the bottom of short pages.
+    BLOG_PAGE_LABEL: Blog Page Route
+    BLOG_PAGE_HELP: Path the blog list lives at. Used by tag chips and the nav link.
+    FONTAWESOME_ENABLED_LABEL: Font Awesome 7
+    FONTAWESOME_ENABLED_HELP: Load Font Awesome 7 free icons from CDN for use in post content.
+    AI_SECTION: AI Authorship
+    AI_NOTICE_ENABLED_LABEL: AI Author Notice
+    AI_NOTICE_ENABLED_HELP: 'Show a note at the end of a post written by one of the accounts below.'
+    AI_NOTICE_AUTHORS_LABEL: Agent Accounts
+    AI_NOTICE_AUTHORS_HELP: 'Accounts that publish as an agent. A post by one of these carries the notice at the end, when the notice is on.'
+    AI_NOTICE: 'This post was drafted by an AI assistant. A human read it before it went up.'
+    AUTHOR_CONTRIBUTION: 'In this post:'
+    BLOG:
+      ALL_POSTS: All posts
+    POST_TYPE:
+      PLAN: Plan
+      REPORT: Report
+    LANG_SWITCH:
+      LABEL: Language
+      SWITCH_TO: 'Switch to %s'
+    TRANSLATION:
+      ORIGINAL_EN: Original in English
+      ORIGINAL_RU: Original in Russian
+      PENDING: 'translation coming'
+    FOOTER:
+      # Both values stay quoted: YAML 1.1 reads a bare `on` as boolean true,
+      # and a bare `ON` key the same way, which broke the lookup outright.
+      MADE_WITH: 'Made with'
+      BUILT_ON: 'on'
+    MENU:
+      LABEL: Menu
+    THEME_TOGGLE:
+      LABEL: Theme
+      AUTO: Auto (follow OS)
+      LIGHT: Light
+      DARK: Dark
+ru:
+  # Titles for github-markdown-alerts callouts; the plugin ships English only.
+  PLUGIN_GITHUB_MARKDOWN_ALERTS:
+    NOTE: Note
+    TIP: Совет
+    IMPORTANT: Важно
+    WARNING: Внимание
+    CAUTION: Осторожно
+  THEME_BCN:
+    TRANSLATION:
+      ORIGINAL_EN: Оригинал на английском
+      ORIGINAL_RU: Оригинал на русском
+      PENDING: 'перевод готовится'

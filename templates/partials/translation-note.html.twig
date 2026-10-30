@@ -1,0 +1,4 @@
+{% set active = grav.language.getLanguage() %}
+{% if page.language and page.language != active %}
+<p class="translation-note" lang="{{ active }}">{{ ('THEME_BCN.TRANSLATION.ORIGINAL_' ~ page.language|upper)|t }} &middot; {{ 'THEME_BCN.TRANSLATION.PENDING'|t }}</p>
+{% endif %}

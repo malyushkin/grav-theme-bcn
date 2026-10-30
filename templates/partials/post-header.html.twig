@@ -1,0 +1,32 @@
+{% set blog_route = theme_var('blog_page', '/blog') %}
+<header class="post-header">
+    <a class="post-backlink" href="{{ base_url_relative }}{{ blog_route }}">&larr; {{ 'THEME_BCN.BLOG.ALL_POSTS'|t }}</a>
+
+    {% include 'partials/post-section.html.twig' with { p: page } %}
+
+    <h1 class="post-title">{{ page.title|bcn_title }}</h1>
+
+    {% if page.header.subtitle %}
+    <p class="post-subtitle">{{ page.header.subtitle }}</p>
+    {% endif %}
+
+    <div class="post-byline">
+        {% set a = bcn_author(page) %}
+        {% if a %}
+            {% include 'partials/author-avatar.html.twig' with { size: 38, author: a.user, author_id: a.id, display_name: a.name } %}
+            <div class="post-byline-info">
+                <span class="post-author">{{ a.name }}</span>
+                <span class="post-byline-secondary">
+                    {%- if a.role %}{{ a.role }} &middot; {% endif -%}
+                    <time datetime="{{ page.date|date('c') }}">{{ page.date|date('M j, Y') }}</time>
+                </span>
+            </div>
+        {% else %}
+            <span class="post-date">
+                <time datetime="{{ page.date|date('c') }}">{{ page.date|date('M j, Y') }}</time>
+            </span>
+        {% endif %}
+    </div>
+
+    {% include 'partials/taxonomies.html.twig' with { tags_only: true } %}
+</header>

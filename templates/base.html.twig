@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{# Only a known slug reaches the attribute. Anything else, including the hex
+   values this setting held before it became a preset list, falls through to
+   purple, which is the brand ramp and needs no block of its own. #}
+{% set accents = ['purple', 'blue', 'green', 'amber', 'rose'] %}
+{% set accent = theme_var('accent_color', 'purple')|trim|lower %}
+{% set accent = accent in accents ? accent : 'purple' %}
+<html lang="{{ page.header.lang|default(page.language|default(grav.language.getLanguage()|default('en'))) }}" data-accent="{{ accent }}">
+<head>
+{% block head %}
+    {% set theme_mode = theme_var('theme_mode', 'auto') %}
+    <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('bcn-theme');
+        var allowed = ['auto','light','dark'];
+        var mode = allowed.indexOf(stored) >= 0 ? stored : {{ theme_mode|json_encode|raw }};
+        var prefersDark = window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var resolved = mode === 'auto' ? (prefersDark ? 'dark' : 'light') : mode;
+        document.documentElement.dataset.theme = resolved;
+        document.documentElement.dataset.themeMode = mode;
+      } catch (e) {
+        document.documentElement.dataset.theme = 'light';
+        document.documentElement.dataset.themeMode = 'auto';
+      }
+    })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% if page.title %}{{ page.title|e }} | {% endif %}{{ site.title|e }}</title>
+    {% if page.header.metadata.description %}
+    <meta name="description" content="{{ page.header.metadata.description|e }}" />
+    {% endif %}
+    {# An untranslated page is the original text under a second URL; point
+       search engines at the original. #}
+    {% if page.language and page.language != grav.language.getLanguage() %}
+    <link rel="canonical" href="{{ uri.rootUrl(true) }}{{ page.language == grav.language.getDefault ? '' : '/' ~ page.language }}{{ page.rawRoute }}" />
+    {% endif %}
+    {# One icon per accent preset, because an external SVG is rendered in its
+       own context and cannot read the page's --bcn-accent-strong. `accent` is
+       already narrowed to the five known slugs above, so nothing else can
+       reach the path. The PNG is for iOS, which rejects SVG here. #}
+    <link rel="icon" type="image/svg+xml" href="{{ url('theme://images/favicon-' ~ accent ~ '.svg') }}" />
+    <link rel="icon" type="image/png" href="{{ url('theme://images/favicon-' ~ accent ~ '-180.png') }}" />
+    <link rel="apple-touch-icon" href="{{ url('theme://images/favicon-' ~ accent ~ '-180.png') }}" />
+{% endblock %}
+
+{% block stylesheets %}
+    {% if theme_var('fontawesome_enabled', 1) %}
+        {% do assets.addCss('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7/css/all.min.css', 80) %}
+    {% endif %}
+    {% do assets.addCss('theme://css/vendor/blades.min.css', 100) %}
+    {# ?v= is the theme version from blueprints.yaml. The files are served
+       without a version in the URL otherwise, and phones kept the old nav
+       CSS after v4.11.1 shipped. Bumping the version busts the cache. #}
+    {% set asset_v = grav.theme.getBlueprint().get('version')|default('0') %}
+    {% do assets.addCss('theme://css/bcn.css?v=' ~ asset_v, 90) %}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block assets %}
+    {{ assets.css()|raw }}
+    {{ assets.js()|raw }}
+{% endblock %}
+</head>
+<body class="{{ theme_var('theme_mode', 'auto') == 'dark' ? 'theme-prefers-dark' : '' }}">
+{% block header %}
+    {% include 'partials/navigation.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+{% endblock %}
+
+{% block footer %}
+    <footer class="site-footer">
+        <div class="site-container">
+            {# Inline SVG rather than a Font Awesome glyph: the icon carries a
+               word in this sentence, and fontawesome_enabled can be off. #}
+            <p>
+                {{ 'THEME_BCN.FOOTER.MADE_WITH'|t }}
+                <svg class="footer-spark" width="12" height="12" viewBox="0 0 12 12"
+                     aria-hidden="true" focusable="false">
+                    <path d="M6 0 L7.3 4.7 L12 6 L7.3 7.3 L6 12 L4.7 7.3 L0 6 L4.7 4.7 Z"
+                          fill="currentColor" />
+                </svg>
+                {{ 'THEME_BCN.FOOTER.BUILT_ON'|t }}
+                <a href="https://getgrav.org" target="_blank" rel="noopener noreferrer">Grav</a>
+            </p>
+        </div>
+    </footer>
+{% endblock %}
+
+{% block bottom %}
+    {% set asset_v = grav.theme.getBlueprint().get('version')|default('0') %}
+    <script defer src="{{ url('theme://js/header-settings.js') }}?v={{ asset_v }}"></script>
+    {{ assets.js('bottom')|raw }}
+{% endblock %}
+</body>
+</html>

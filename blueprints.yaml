@@ -1,0 +1,152 @@
+name: 'BCN'
+slug: bcn
+type: theme
+version: 1.0.0
+description: 'Blades-based blog theme with 3-mode theme toggle and accessible palette.'
+icon: moon
+author:
+  name: Roman Maliushkin
+  url: https://github.com/malyushkin
+homepage: https://github.com/malyushkin/grav-theme-bcn
+bugs: https://github.com/malyushkin/grav-theme-bcn/issues
+keywords: bcn, blades, dark-mode, accessible, blog, grav-theme
+license: MIT
+compatibility:
+  grav: ['2.1']
+
+form:
+  validation: loose
+  fields:
+
+    theme_section:
+      type: section
+      title: PLUGIN_ADMIN.THEME
+      underline: true
+
+    theme_mode:
+      type: select
+      label: THEME_BCN.THEME_MODE_LABEL
+      help: THEME_BCN.THEME_MODE_HELP
+      size: small
+      default: auto
+      options:
+        auto: THEME_BCN.THEME_MODE_AUTO
+        light: THEME_BCN.THEME_MODE_LIGHT
+        dark: THEME_BCN.THEME_MODE_DARK
+
+    accent_color:
+      type: accent-swatch
+      label: THEME_BCN.ACCENT_COLOR_LABEL
+      help: THEME_BCN.ACCENT_COLOR_HELP
+      size: small
+      default: purple
+      options:
+        purple: THEME_BCN.ACCENT_PURPLE
+        blue: THEME_BCN.ACCENT_BLUE
+        green: THEME_BCN.ACCENT_GREEN
+        amber: THEME_BCN.ACCENT_AMBER
+        rose: THEME_BCN.ACCENT_ROSE
+
+    ai_section:
+      type: section
+      title: THEME_BCN.AI_SECTION
+      underline: true
+
+    ai_notice_enabled:
+      type: toggle
+      label: THEME_BCN.AI_NOTICE_ENABLED_LABEL
+      help: THEME_BCN.AI_NOTICE_ENABLED_HELP
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    # `users` is a reusable admin-next field shipped by the api plugin; its own
+    # header documents dropping it into any blueprint, and Grav's core page
+    # blueprint uses it for Page Authors. It stores a list of usernames.
+    ai_notice_authors:
+      type: users
+      array: true
+      value_only: true
+      label: THEME_BCN.AI_NOTICE_AUTHORS_LABEL
+      help: THEME_BCN.AI_NOTICE_AUTHORS_HELP
+
+    header_section:
+      type: section
+      title: PLUGIN_ADMIN.HEADER
+      underline: true
+
+    header_fixed:
+      type: toggle
+      label: THEME_BCN.HEADER_FIXED_LABEL
+      help: THEME_BCN.HEADER_FIXED_HELP
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    header_animated:
+      type: toggle
+      label: THEME_BCN.HEADER_ANIMATED_LABEL
+      help: THEME_BCN.HEADER_ANIMATED_HELP
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    footer_section:
+      type: section
+      title: PLUGIN_ADMIN.FOOTER
+      underline: true
+
+    sticky_footer:
+      type: toggle
+      label: THEME_BCN.STICKY_FOOTER_LABEL
+      help: THEME_BCN.STICKY_FOOTER_HELP
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    blog_section:
+      type: section
+      title: PLUGIN_ADMIN.BLOG
+      underline: true
+
+    blog_page:
+      type: text
+      label: THEME_BCN.BLOG_PAGE_LABEL
+      help: THEME_BCN.BLOG_PAGE_HELP
+      size: medium
+      default: '/blog'
+      validate:
+        pattern: '^/[a-z0-9_-]+$'
+
+    icons_section:
+      type: section
+      title: PLUGIN_ADMIN.ICONS
+      underline: true
+
+    fontawesome_enabled:
+      type: toggle
+      label: THEME_BCN.FONTAWESOME_ENABLED_LABEL
+      help: THEME_BCN.FONTAWESOME_ENABLED_HELP
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool

@@ -1,0 +1,41 @@
+{% import 'macros/header.html.twig' as header %}
+{% set theme_mode = theme_var('theme_mode', 'auto') %}
+<nav class="site-nav{{ theme_var('header_fixed') ? ' site-nav-fixed' : '' }}" aria-label="Primary">
+    {# Same width as the article column, so the brand sits right above the
+       post titles instead of out at the page edge. #}
+    <div class="site-nav-inner site-header-container">
+        <div class="site-nav-start">
+            <a class="site-nav-brand" href="{{ home_url }}">{{ site.title|e }}</a>
+            <ul class="site-nav-links">
+            {% for page in pages.children.visible %}
+                {% set current = (page.active or page.activeChild) ? 'site-nav-link-active' : '' %}
+                <li><a class="site-nav-link {{ current }}" href="{{ page.url }}"{{ (page.active or page.activeChild) ? ' aria-current="page"' : '' }}>{{ page.menu|default(page.title) }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% include 'partials/header-menus.html.twig' with { html_mode: theme_mode } %}
+        <button type="button" class="header-menu-toggle site-nav-menu-toggle" data-bcn-disclosure
+                aria-expanded="false" aria-controls="site-nav-panel"
+                aria-label="{{ 'THEME_BCN.MENU.LABEL'|t|e('html_attr') }}">
+            <svg class="header-menu-icon" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
+                <path d="M2.5 5h13M2.5 9h13M2.5 13h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+    {# Phones: everything above folds into this panel under the header. #}
+    <div class="site-nav-panel" id="site-nav-panel" hidden>
+        <div class="site-header-container">
+            <div class="site-nav-panel-links">
+            {% for p in pages.children.visible %}
+                <a class="site-nav-link{{ (p.active or p.activeChild) ? ' site-nav-link-active' : '' }}" href="{{ p.url }}"{{ (p.active or p.activeChild) ? ' aria-current="page"' : '' }}>{{ p.menu|default(p.title) }}</a>
+            {% endfor %}
+            </div>
+            <div class="site-nav-panel-row" role="group" aria-label="{{ 'THEME_BCN.LANG_SWITCH.LABEL'|t|e('html_attr') }}">
+                {{ header.lang_links(grav.language, page, base_url_simple, 'site-nav-panel-item') }}
+            </div>
+            <div class="site-nav-panel-row" role="group" aria-label="{{ 'THEME_BCN.THEME_TOGGLE.LABEL'|t|e('html_attr') }}">
+                {{ header.theme_buttons(theme_mode, 'site-nav-panel-item') }}
+            </div>
+        </div>
+    </div>
+</nav>

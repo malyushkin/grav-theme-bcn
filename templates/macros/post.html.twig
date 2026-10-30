@@ -1,0 +1,7 @@
+{# Falls back to the raw value: |t hands back the key itself for a type
+   nobody wrote a string for, and the key is worse than the value. #}
+{% macro type_label(type) %}
+{%- set key = 'THEME_BCN.POST_TYPE.' ~ type|upper -%}
+{%- set label = key|t -%}
+{{- label == key ? type : label -}}
+{% endmacro %}
